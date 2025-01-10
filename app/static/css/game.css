@@ -1,0 +1,150 @@
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes celebrate {
+    0% { transform: scale(1) rotate(0); }
+    25% { transform: scale(1.2) rotate(-10deg); }
+    75% { transform: scale(1.2) rotate(10deg); }
+    100% { transform: scale(1) rotate(0); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0); }
+    50% { transform: translateY(-15px) rotate(5deg); }
+}
+
+@keyframes move {
+    0% { background-position: 0 0; }
+    100% { background-position: 20px 0; }
+}
+
+@keyframes slideIn {
+    0% { 
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    100% { 
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+.character {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.character:hover {
+    transform: scale(1.1);
+}
+
+.character-happy { background: url('../images/character-happy.svg') no-repeat center; }
+.character-sad { background: url('../images/character-sad.svg') no-repeat center; }
+.character-sleeping { background: url('../images/character-sleeping.svg') no-repeat center; }
+.character-celebrating { background: url('../images/character-celebrating.svg') no-repeat center; }
+
+.achievement-badge {
+    position: relative;
+    animation: float 3s ease-in-out infinite;
+}
+
+.streak-flame {
+    animation: bounce 1s ease-in-out infinite;
+}
+
+.level-up {
+    animation: celebrate 1s ease-in-out;
+}
+
+.progress-bar {
+    height: 20px;
+    background: linear-gradient(90deg, #4ade80 var(--progress), #e5e7eb var(--progress));
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        45deg,
+        rgba(255,255,255,0.2) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255,255,255,0.2) 50%,
+        rgba(255,255,255,0.2) 75%,
+        transparent 75%,
+        transparent
+    );
+    background-size: 20px 20px;
+    animation: move 1s linear infinite;
+}
+
+.achievement-unlocked {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    z-index: 1000;
+    animation: slideIn 0.5s ease-out;
+}
+
+/* Dark mode character styles */
+html.dark .character-happy { filter: brightness(0.8); }
+html.dark .character-sad { filter: brightness(0.8); }
+html.dark .character-sleeping { filter: brightness(0.8); }
+html.dark .character-celebrating { filter: brightness(0.8); }
+
+/* Dark mode progress bar */
+html.dark .progress-bar {
+    background: linear-gradient(90deg, #059669 var(--progress), #374151 var(--progress));
+}
+
+html.dark .progress-bar::after {
+    background: linear-gradient(
+        45deg,
+        rgba(255,255,255,0.1) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255,255,255,0.1) 50%,
+        rgba(255,255,255,0.1) 75%,
+        transparent 75%,
+        transparent
+    );
+}
+
+/* Dark mode achievement popup */
+html.dark .achievement-unlocked {
+    background: #1f2937;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Dark mode hover effects */
+html.dark .character:hover {
+    filter: brightness(1.2);
+}
+
+html.dark .achievement-badge {
+    filter: brightness(0.9);
+}
+
+html.dark .achievement-badge:hover {
+    filter: brightness(1.1);
+} 

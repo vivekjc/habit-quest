@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Habit Quest - Your Adventure{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <!-- Player Stats -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <div class="character character-happy"></div>
+                <div>
+                    <h2 class="text-2xl font-bold">{{ player_name }}'s Quest</h2>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-sm text-gray-500">Level {{ level }}</span>
+                        <div class="w-48 h-2 bg-gray-200 rounded-full">
+                            <div class="h-full bg-blue-500 rounded-full" 
+                                 style="width: {{ xp_percentage }}%"></div>
+                        </div>
+                        <span class="text-sm text-gray-500">{{ xp }}/{{ next_level_xp }} XP</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-yellow-500">🏆</div>
+                    <div class="text-sm text-gray-500">{{ achievements_count }}</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-red-500">❤️</div>
+                    <div class="text-sm text-gray-500">{{ streak_points }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Daily Quests (Habits) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for habit in habits %}
+        <div class="bg-white rounded-lg shadow-md p-6 transform hover:scale-105 transition-all duration-200">
+            <div class="flex justify-between items-start mb-4">
+                <div class="flex items-center space-x-3">
+                    <div class="character character-{{ habit.status }}"></div>
+                    <div>
+                        <h3 class="text-xl font-bold">{{ habit.name }}</h3>
+                        <p class="text-sm text-gray-500">{{ habit.frequency }}</p>
+                    </div>
+                </div>
+                {% if habit.streak >= 7 %}
+                <div class="streak-flame text-3xl" title="{{ habit.streak }} day streak!">🔥</div>
+                {% endif %}
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="mb-4">
+                <div class="progress-bar" style="--progress: {{ habit.progress }}%">
+                    <div class="absolute inset-0 flex items-center justify-center text-white font-bold">
+                        {{ habit.completions_today }}/{{ habit.times_per_day }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex justify-between items-center">
+                <button onclick="completeHabit({{ habit.id }})" 
+                        class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transform hover:scale-105 transition-all duration-200">
+                    {% if habit.is_completed %}
+                    ✨ Completed!
+                    {% else %}
+                    🎯 Complete Quest
+                    {% endif %}
+                </button>
+                <div class="flex items-center space-x-2">
+                    {% for badge in habit.badges %}
+                    <div class="achievement-badge text-2xl" title="{{ badge.description }}">
+                        {{ badge.emoji }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Achievement Popup Template -->
+<div id="achievement-popup" class="achievement-unlocked hidden">
+    <div class="flex items-center space-x-3">
+        <div class="text-3xl">🎉</div>
+        <div>
+            <h4 class="font-bold text-lg">Achievement Unlocked!</h4>
+            <p class="text-sm text-gray-600" id="achievement-description"></p>
+        </div>
+    </div>
+</div>
+{% endblock %} 
