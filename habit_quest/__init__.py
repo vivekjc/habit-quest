@@ -12,6 +12,9 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
     
+    # Add debug logging
+    app.logger.info(f"Database URI: {app.config['SQLALCHEMY_DATABASE_URI']}")
+    
     db.init_app(app)
     Talisman(app, content_security_policy=None)
     
@@ -20,7 +23,9 @@ def create_app():
         
         # Create tables
         try:
+            app.logger.info("Attempting to create database tables...")
             db.create_all()
+            app.logger.info("Database tables created successfully")
             
             # Create initial player if none exists
             from .models import Player
@@ -31,6 +36,8 @@ def create_app():
                 app.logger.info('Created initial player')
         except Exception as e:
             app.logger.error(f'Database initialization error: {str(e)}')
+            # Re-raise the exception to see it in Render logs
+            raise
         
         if not app.debug:
             if not os.path.exists('logs'):
