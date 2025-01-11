@@ -13,6 +13,10 @@ services:
         fromDatabase:
           name: habit-quest-db
           property: connectionString
+      - key: FLASK_APP
+        value: habit_quest
+      - key: FLASK_ENV
+        value: production
 
 databases:
   - name: habit-quest-db

@@ -11,20 +11,26 @@ db = SQLAlchemy()
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
-    Talisman(app, content_security_policy=None)
     
     db.init_app(app)
+    Talisman(app, content_security_policy=None)
     
     with app.app_context():
         from . import routes
-        db.create_all()
         
-        # Create initial player if none exists
-        from .models import Player
-        if not Player.query.first():
-            player = Player(name="Player 1")
-            db.session.add(player)
-            db.session.commit()
+        # Create tables
+        try:
+            db.create_all()
+            
+            # Create initial player if none exists
+            from .models import Player
+            if not Player.query.count():
+                player = Player(name="Player 1")
+                db.session.add(player)
+                db.session.commit()
+                app.logger.info('Created initial player')
+        except Exception as e:
+            app.logger.error(f'Database initialization error: {str(e)}')
         
         if not app.debug:
             if not os.path.exists('logs'):
