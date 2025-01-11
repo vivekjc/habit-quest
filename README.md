@@ -43,7 +43,3 @@ For support, email support@habitquest.com or open an issue in the GitHub reposit
 ## 🔄 Updates
 
 Check the [CHANGELOG.md](CHANGELOG.md) for version history and updates.
-
----
-
-Made with ❤️ by [Your Name]
